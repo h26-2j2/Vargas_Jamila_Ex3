@@ -10,6 +10,7 @@ public class Personnage : MonoBehaviour
     public InputAction actionTir;
 
     // AJOUTER UNE ACTION POUR LE DASH 👇
+    public InputAction actionDash;
 
 
     [Header("Déplacement horizontal")]
@@ -35,6 +36,8 @@ public class Personnage : MonoBehaviour
 
     [Header("Dash")]
     // AJOUTER LES VARIABLES NÉCESSAIRES POUR LE DASH 👇
+    bool inputDash;
+    public bool estEnDash;
 
     [Header("Sons")]
     public AudioClip sonSaut;
@@ -56,6 +59,7 @@ public class Personnage : MonoBehaviour
         actionTir.Enable();
 
         //ACTIVER L'ACTION DU DASH 👇
+        actionDash.Enable();
     }
 
 
@@ -67,6 +71,7 @@ public class Personnage : MonoBehaviour
         actionTir.Disable();
 
         //DÉSACTIVER L'ACTION DU DASH 👇
+        actionDash.Disable();
     }
 
 
@@ -83,6 +88,7 @@ public class Personnage : MonoBehaviour
         inputSaut = actionSaut.WasPressedThisFrame();
         inputTir = actionTir.WasPressedThisFrame();
         //DÉTECTER LA TOUCHE POUR LE DASH ICI 👇
+        inputDash = actionDash.WasPressedThisFrame();
 
         //Vérification du sol
         estAuSol = Physics2D.Raycast(transform.position, Vector2.down, 0.4f, coucheSol);
@@ -93,6 +99,7 @@ public class Personnage : MonoBehaviour
         animator.SetBool("estEnSaut", estAuSol == false);
 
         // GÉRER L'ANIMATION ASSOCIÉE AU DASH ICI 👇 
+        animator.SetBool("estEnDash", inputDash);
 
 
         //Ajustement du sens du personnage en fonction des touches
