@@ -37,7 +37,7 @@ public class Personnage : MonoBehaviour
     [Header("Dash")]
     // AJOUTER LES VARIABLES NÉCESSAIRES POUR LE DASH 👇
     bool inputDash;
-    public bool estEnDash;
+    public float forceDash;
 
     [Header("Sons")]
     public AudioClip sonSaut;
@@ -99,7 +99,10 @@ public class Personnage : MonoBehaviour
         animator.SetBool("estEnSaut", estAuSol == false);
 
         // GÉRER L'ANIMATION ASSOCIÉE AU DASH ICI 👇 
-        animator.SetBool("estEnDash", inputDash);
+        if (inputDash)
+        {
+            animator.SetTrigger("EstEnDash");
+        }
 
 
         //Ajustement du sens du personnage en fonction des touches
@@ -168,6 +171,16 @@ public class Personnage : MonoBehaviour
         }
 
         // GÉRER LA PHYSIQUE ASSOCIÉE AU DASH ICI 👇 
+        if (inputDash && direction == 1 ) 
+        {
+            sr.flipX = false;
+            rb.AddForce(Vector2.right * forceDash, ForceMode2D.Impulse);
+        }
+        else if (inputDash && direction == -1)
+        {
+            sr.flipX = true;
+            rb.AddForce(Vector2.left  * forceDash , ForceMode2D.Impulse);
+        }
     }
 
 
