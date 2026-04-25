@@ -19193,6 +19193,7 @@ MonoBehaviour:
   timerTir: 0
   timerTirMax: 0.5
   forceDash: 15
+  dashDuration: 0.3
   sonSaut: {fileID: 8300000, guid: 5e65700cb01e4734481efea13b8b0827, type: 3}
   sonTir: {fileID: 8300000, guid: 53cefd290c80f5c4181674f4ad48c132, type: 3}
   animator: {fileID: 2209711221998578653}
