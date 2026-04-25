@@ -39,6 +39,10 @@ public class Personnage : MonoBehaviour
     bool inputDash;
     public float forceDash;
 
+    float dashTimer = 0f;
+    public float dashDuration = 0.2f;
+
+
     [Header("Sons")]
     public AudioClip sonSaut;
     public AudioClip sonTir;
@@ -99,9 +103,16 @@ public class Personnage : MonoBehaviour
         animator.SetBool("estEnSaut", estAuSol == false);
 
         // GÉRER L'ANIMATION ASSOCIÉE AU DASH ICI 👇 
-        if (inputDash)
+        if (inputDash && dashTimer <= 0)
         {
             animator.SetTrigger("EstEnDash");
+
+            dashTimer = dashDuration;
+        }
+        if (dashTimer > 0)
+        {
+            dashTimer -= Time.deltaTime;
+            dashTimer = Mathf.Max(dashTimer, 0); // Empêche d'être plus petit que 0
         }
 
 
@@ -143,7 +154,7 @@ public class Personnage : MonoBehaviour
             //Déclenchement de l'animation du tir
             animator.SetTrigger("tir");
         }
-
+         // Projectile
         if (timerTir > 0)
         {
             timerTir -= Time.deltaTime;
@@ -152,13 +163,11 @@ public class Personnage : MonoBehaviour
 
 
     }
-
-
-    // Projectile
+   
     private void FixedUpdate()
     {
         //Changement de la vitesse de déplacement
-        if (inputDeplacement != 0)
+        if ( dashTimer <= 0 && inputDeplacement != 0)
         {
             rb.linearVelocityX = inputDeplacement * vitesseDeplacement;
         }
@@ -171,16 +180,18 @@ public class Personnage : MonoBehaviour
         }
 
         // GÉRER LA PHYSIQUE ASSOCIÉE AU DASH ICI 👇 
-        if (inputDash && direction == 1 ) 
+        //probleme dash ne marche pas  quand il marche, il faut que le personnage soit immobile pour pouvoir dasher
+        if (inputDash && direction == 1)
         {
             sr.flipX = false;
             rb.AddForce(Vector2.right * forceDash, ForceMode2D.Impulse);
         }
-        else if (inputDash && direction == -1)
+        else if (inputDash  && direction == -1)
         {
             sr.flipX = true;
-            rb.AddForce(Vector2.left  * forceDash , ForceMode2D.Impulse);
+            rb.AddForce(Vector2.left * forceDash, ForceMode2D.Impulse);
         }
+         
     }
 
 
